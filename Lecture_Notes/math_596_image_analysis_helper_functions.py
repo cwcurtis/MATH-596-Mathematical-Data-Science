@@ -3,6 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from skimage import io
 
+# We need a tool that converts images into grayscale (i.e. all pixel values in [0, 1])
+def gray_scale_convert(image):
+    rescaled_image = np.zeros((image.shape[0], image.shape[1]))
+    rescaled_image[:, :] = image
+    rescaled_image -= np.min(rescaled_image)
+    rescaled_image /= np.max(rescaled_image)
+    return rescaled_image
+
 # We need to be able to pass in a directory and build an image list
 def file_builder(directory):
     image_list = []
@@ -11,16 +19,9 @@ def file_builder(directory):
     for root, dirs, files in os.walk(directory):
         for filename in files:
             if filename != "Readme":
-                image_list.append( io.imread(os.path.join(root, filename), as_gray=True) )
+                input_image = gray_scale_convert(np.squeeze(io.imread(os.path.join(root, filename))) )
+                image_list.append( input_image )
     return image_list
-
-# We need a tool that converts images into grayscale (i.e. all pixel values in [0, 1])
-def gray_scale_convert(image):
-    rescaled_image = np.zeros((image.shape[0], image.shape[1]))
-    rescaled_image[:, :] = image
-    rescaled_image -= np.min(rescaled_image)
-    rescaled_image /= np.max(rescaled_image)
-    return rescaled_image
 
 # We would like to easily comapre different images to one another after we do various things to them.  
 def image_comparison(original_image, reduced_image):
