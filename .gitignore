@@ -1,1 +1,6 @@
 .ipynb_checkpoints
+./Assignments/celeba/
+./Assignments/__pycache__/
+./Lecture_Notes/__pycache__/
+./Lecture_Notes/MNIST/
+
